@@ -6,19 +6,9 @@ import AddTodo from "./Todo/AddTodo"
 
 
 function App() {
-  const [items, setItems] = useState([
-    {
-      id: "0",
-      title: "Hello World",
-      done: true
-    },
-    {
-      id: "1",
-      title: "Hello World 2",
-      done: false
-    }
-  ]);
+  const [items, setItems] = useState([]);
 
+  // Todo 추가
   const addItem = (item) => {
     item.id = "ID-" + items.length;
     item.done = false;
@@ -29,10 +19,20 @@ function App() {
     console.log("items : ", items);
   };
 
+  // Todo 삭제
+  const deleteItem = (item) => {
+    // 삭제할 아이템 제외하고 새 배열에 저장
+    const newItems = items.filter(e => e.id !== item.id);
+    setItems([...newItems]);
+  }
+
   let todoItems = items.length > 0 && (
     <Paper style={{ margin: 16 }}>
       <List>
-        {items.map((item) => (<Todo item={item} key={item.id} />))}
+        {items.map((item) => (
+          <Todo item={item} key={item.id}
+            deleteItem={deleteItem} />
+        ))}
       </List>
     </Paper>
   );
