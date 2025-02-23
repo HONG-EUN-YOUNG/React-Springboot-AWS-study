@@ -14,13 +14,41 @@ const Todo = (props) => {
     deleteItem(item);
   }
 
+  //// Todo 수정
+  // 수정상태 flag
+  const [readOnly, setReadOnly] = useState(true);
+  const turnOffReadOnly = () => {
+    setReadOnly(false);
+  }
+  const turnOnReadOnly = (e) => {
+    if (e.key === "Enter") {
+      setReadOnly(true);
+    }
+  }
+
+  // title 수정
+  const editItem = props.editItem;
+  const editEventHandler = (e) => {
+    item.title = e.target.value;
+    editItem();
+  };
+
+  // 체크박스 수정
+  const checkboxEventHandler = (e) => {
+    item.done = e.target.checked;
+    editItem();
+  }
+
   return (
     <ListItem>
-      <Checkbox checked={item.done} />
+      <Checkbox checked={item.done} onChange={checkboxEventHandler}/>
 
       <ListItemText>
         <InputBase
-          inputProps={{ "aria-label": "naked" }}
+          inputProps={{ "aria-label": "naked", readOnly: readOnly }}
+          onClick={turnOffReadOnly}
+          onKeyDown={turnOnReadOnly}
+          onChange={editEventHandler}
           type="text"
           id={item.id}
           name={item.id}
