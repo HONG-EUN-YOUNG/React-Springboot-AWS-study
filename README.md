@@ -1,5 +1,5 @@
 # React.js, 스프링 부트, AWS로 배우는 웹 개발 101
-<img src="https://github.com/user-attachments/assets/ca9bd862-87d7-4671-bf2f-b666933b1aa8" width="300"/><br>
+<img src="https://github.com/user-attachments/assets/184f95ff-9559-4855-ba86-fd6d284ea8f2" width="300"/><br>
 
 ### 📚 소개
 React.js(프론트엔드) + Spring Boot(백엔드) + AWS(배포)를 활용한 **Todo 애플리케이션 개발**
