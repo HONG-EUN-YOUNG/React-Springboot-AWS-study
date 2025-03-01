@@ -1,4 +1,3 @@
-## 1.3 배경지식
 ### 1.3.1 HTTP(HyperText Transfer Protocol)
 - 클라이언트와 서버 간 요청과 응답을 정의하는 통신 규약
 
