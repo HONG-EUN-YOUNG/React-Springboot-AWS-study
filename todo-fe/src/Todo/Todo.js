@@ -15,28 +15,28 @@ const Todo = (props) => {
   }
 
   //// Todo 수정
-  // 수정상태 flag
+  // readOnly 설정
   const [readOnly, setReadOnly] = useState(true);
   const turnOffReadOnly = () => {
     setReadOnly(false);
   }
   const turnOnReadOnly = (e) => {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && readOnly == false) {
       setReadOnly(true);
+      editItem(item);
     }
   }
 
   // title 수정
   const editItem = props.editItem;
   const editEventHandler = (e) => {
-    item.title = e.target.value;
-    editItem();
+    setItem({...item, title: e.target.value});
   };
 
   // 체크박스 수정
   const checkboxEventHandler = (e) => {
     item.done = e.target.checked;
-    editItem();
+    editItem(item);
   }
 
   return (

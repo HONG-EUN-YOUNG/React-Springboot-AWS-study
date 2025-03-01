@@ -1,8 +1,9 @@
 import './App.css';
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { List, Paper, Container } from "@mui/material";
 import Todo from "./Todo/Todo";
 import AddTodo from "./Todo/AddTodo"
+import { call } from "./service/ApiService";
 
 
 function App() {
@@ -10,26 +11,27 @@ function App() {
 
   // Todo 추가
   const addItem = (item) => {
-    item.id = "ID-" + items.length;
-    item.done = false;
-
-    // setItems로 업데이트하고 새 배열 만들기
-    setItems([...items, item]);
-    
-    console.log("items : ", items);
+    call("/todo", "POST", item)
+      .then((response) => setItems(response.data));
   };
 
   // Todo 삭제
   const deleteItem = (item) => {
-    // 삭제할 아이템 제외하고 새 배열에 저장
-    const newItems = items.filter(e => e.id !== item.id);
-    setItems([...newItems]);
+    call("/todo", "DELETE", item)
+      .then((response) => setItems(response.data));
   }
 
   // Todo 수정
-  const editItem = () => {
-    setItems([...items]);
+  const editItem = (item) => {
+    call("/todo", "PUT", item)
+      .then((response) => setItems(response.data));
   }
+
+  // Todo API 호출
+  useEffect(() => {
+    call("/todo", "GET", null)
+      .then((response) => setItems(response.data));
+  }, []);
 
   let todoItems = items.length > 0 && (
     <Paper style={{ margin: 16 }}>
