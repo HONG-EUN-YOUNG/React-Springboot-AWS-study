@@ -3,6 +3,7 @@ package com.example.Todo.controller;
 import com.example.Todo.dto.ResponseDTO;
 import com.example.Todo.dto.UserDTO;
 import com.example.Todo.model.UserEntity;
+import com.example.Todo.security.TokenProvider;
 import com.example.Todo.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ public class UserController {
   @Autowired
   private UserService userService;
 
+  @Autowired
+  private TokenProvider tokenProvider;
+
   // 회원가입
   @PostMapping("/signup")
   public ResponseEntity<?> registerUser(@RequestBody UserDTO userDTO) {
@@ -26,7 +30,7 @@ public class UserController {
       if(userDTO == null || userDTO.getPassword() == null ) {
         throw new RuntimeException("Invalid Password value.");
       }
-      
+
       // 유저 정보 생성
       UserEntity user = UserEntity.builder()
           .username(userDTO.getUsername())
@@ -58,9 +62,13 @@ public class UserController {
         userDTO.getPassword());
 
     if(user != null) {
+      // 토큰 생성
+      final String token = tokenProvider.create(user);
+
       final UserDTO responseUserDTO = UserDTO.builder()
           .username(user.getUsername())
           .id(user.getId())
+          .token(token) // dto에 토큰 반환
           .build();
 
       return ResponseEntity.ok().body(responseUserDTO);
