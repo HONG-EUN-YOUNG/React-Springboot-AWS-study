@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.filter.CorsFilter;
 
 @Configuration
@@ -20,12 +21,15 @@ public class WebSecurityConfig {
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    http.cors(cors -> cors.disable())
-        .csrf(csrf -> csrf.disable())
-        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+    http
+        // CORS 설정 활성화
+        .cors(cors -> cors.configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()))
+        .csrf(csrf -> csrf.disable()) // CSRF 비활성화
+        .httpBasic(basic -> basic.disable()) // HTTP Basic 인증 비활성화
+        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 설정
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/", "/auth/**").permitAll()
-            .anyRequest().authenticated()
+            .requestMatchers("/", "/auth/**").permitAll() // 인증 필요 없는 경로
+            .anyRequest().authenticated() // 나머지 경로는 인증 필요
         );
 
     // 필터 등록

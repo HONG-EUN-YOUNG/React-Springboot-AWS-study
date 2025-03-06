@@ -21,7 +21,7 @@ const Todo = (props) => {
     setReadOnly(false);
   }
   const turnOnReadOnly = (e) => {
-    if (e.key === "Enter" && readOnly == false) {
+    if (e.key === "Enter" && readOnly === false) {
       setReadOnly(true);
       editItem(item);
     }
