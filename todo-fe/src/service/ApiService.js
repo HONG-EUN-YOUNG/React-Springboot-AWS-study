@@ -30,3 +30,14 @@ export function call(api, method, request) {
       console.log(error);
     });
 }
+
+// 로그인
+export function signin(userDTO) {
+  return call("/auth/signin", "POST", userDTO)
+  .then((response) => {
+    // token 있으면 todo화면으로 리디렉트
+    if (response.token) {
+      window.location.href = "/";
+    }
+  });
+}
